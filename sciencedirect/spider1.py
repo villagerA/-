@@ -41,9 +41,12 @@ def begin(url,tablename):
 	driver.set_page_load_timeout(80)
 	driver.get(url)
 	try:
-		time = driver.find_element_by_xpath('//*[@id="app"]/div/div/div/section/div/div[2]/article/div[1]/div[2]/div/span').text
-		title = driver.find_element_by_xpath('//*[@id="app"]/div/div/div/section/div/div[2]/article/h1/span').text
-		periodical = driver.find_element_by_xpath('//*[@id="app"]/div/div/div/section/div/div[2]/article/div[1]/div[2]/h2/span/a').text
+		time = driver.find_element_by_xpath('//*[@id="app"]/div/div/div/section/div\
+			/div[2]/article/div[1]/div[2]/div/span').text
+		title = driver.find_element_by_xpath('//*[@id="app"]/div/div/div/section/div\
+			/div[2]/article/h1/span').text
+		periodical = driver.find_element_by_xpath('//*[@id="app"]/div/div/div/section\
+			/div/div[2]/article/div[1]/div[2]/h2/span/a').text
 		                                    
 		ag =  driver.find_elements_by_css_selector(".author.size-m.workspace-trigger")
 		for i in ag:
@@ -66,7 +69,8 @@ def begin(url,tablename):
 				pass
 			email = ''
 			workin = ''
-			emails = driver.find_elements_by_xpath('//*[@id="app"]/div/div/div/section/div/div[3]/div/div/div[2]/div')
+			emails = driver.find_elements_by_xpath('//*[@id="app"]/div/div/div\
+				/section/div/div[3]/div/div/div[2]/div')
 			for e in emails:
 				try:
 					email = e.find_element_by_xpath('a').text
@@ -77,7 +81,8 @@ def begin(url,tablename):
 				except:
 					email = ''
 				try:
-					workin = e.find_element_by_xpath('//*[@id="app"]/div/div/div/section/div/div[3]/div/div/div[2]/div[2]/span').text
+					workin = e.find_element_by_xpath('//*[@id="app"]/div/div\
+						/div/section/div/div[3]/div/div/div[2]/div[2]/span').text
 				except:
 					workin = ''
 
@@ -98,6 +103,7 @@ def begin(url,tablename):
 
 if __name__ == '__main__':
 	# url = 'http://www.sciencedirect.com/science/article/pii/S0939362517300262'
-	url = 'http://www.sciencedirect.com/science/article/pii/S0379711217307257'
+	# url = 'http://www.sciencedirect.com/science/article/pii/S0379711217307257'
+	url = 'http://www.sciencedirect.com/science/article/pii/S0143622816307160'
 	tablename= ''
 	begin(url, tablename)

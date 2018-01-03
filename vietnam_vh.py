@@ -66,7 +66,8 @@ def crawlNews(links, targetfilepath):
 		title = html.xpath('//*[@class="clearfix fon4"]/text()')[0].strip()
 		fw2.write(title+'\n')
 		try:
-			con1 = html.xpath('//*[@style="text-align: justify; font-family: arial, helvetica, sans-serif"]/text()')[0].strip()
+			con1 = html.xpath('//*[@style="text-align: justify; \
+				font-family: arial, helvetica, sans-serif"]/text()')[0].strip()
 		except:
 			con1s = re.findall('<strong>(.*?)</strong>',req)
 			for i in con1s:
