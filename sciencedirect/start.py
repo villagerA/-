@@ -15,55 +15,28 @@ import spider1
 from bs4 import BeautifulSoup
 from lxml import etree
 
-# conn = mysql.connector.connect(
-# 	user = 'root',
-# 	password = '123456',
-# 	database = 'hahaha',
-# 	charset = "utf8")
-# cursor = conn.cursor()
-# tablename = raw_input("input the name of the data table you want to save: ")
-
-# cursor.execute("create table if not exists "+tablename+
-# # 	" (author char(100),emai char(100),title char(255),time char(100),periodical char(100))" )
-# cursor.execute("insert into ss(author,email,title,time,periodical")
-
-
-def request(url):
-	send_headers = {
-	    'User-Agent':'Mozilla/5.0 (Windows NT 6.2; rv:16.0) Gecko/20100101 Firefox/16.0',
-    	'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    	'Connection':'keep-alive'
-	}
-    
-  
-	req = urllib2.Request(url,headers=send_headers)
-	return urllib2.urlopen(req).read()
-
-
 
 def begin(url):
-	# if num ==3:
-	# 	break
 	driver = webdriver.Chrome()
 	print url
 	driver.get(url)
-	
-	# urlset.append(current_url)
-	# print current_url
+
 	urls = driver.find_elements_by_xpath('//*[@id="main_content"]/main/div[1]/div[2]/div[2]/ol/li')
-										
+	num = 0									
 	for i in urls:
 		try:
+                        print num
+                        num= num+1
 			url = i.find_element_by_xpath('div/div/h2/a').get_attribute("href")
 			print url
 			spider1.begin(url,'')
 			break
 		except:
 			pass
-	nexturl = 'http://www.sciencedirect.com/search'+driver.find_element_by_xpath('//*[@id="main_content"]/main/div[1]/div[2]/div[3]/div[2]/ol/li[2]/a').get_attribute("href").split('http://www.sciencedirect.com/')[1]
+	nexturl = 'http://www.sciencedirect.com/search'+driver.find_element_by_xpath('//*[@id="main_content"]/main/div[1]/div[2]/div[3]/div[2]/ol/li[2]/a').get_attribute("href")#.split('http://www.sciencedirect.com/')[1]
 	print nexturl
-	begin(nexturl)
-	# driver.close()
+	#begin(nexturl)
+	driver.close()
 	
 	# num = num+1
 
