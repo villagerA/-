@@ -1,70 +1,58 @@
 #_*_ coding: utf-8 _*_
-import os
-import sys
-import urllib2
-import requests
-import re
-import mysql.connector
-import time
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import TimeoutException
-from bs4 import BeautifulSoup
-from lxml import etree
-# from pyquery import PyQuery as pq
-
-reload(sys)  
-sys.setdefaultencoding('utf8') #解决插入数据库时编码的问题：ascii' codec can't encode characters...
-
+from selenium.webdriver.chrome.options import Options
+import time
+# chrome_options = Options()
+# chrome_options.add_argument("--headless")
 
 def begin(url,tablename):
-
-	driver = webdriver.Chrome() 
-	driver.set_page_load_timeout(80)
+	driver = webdriver.Chrome()
+	driver.set_page_load_timeout(200)
 	driver.get(url)
-	periodical = driver.find_element_by_xpath('//*[@id="centerInner"]/div[1]/div[2]/div/a/span').text
-	time = driver.find_element_by_xpath('//*[@id="centerInner"]/div[1]/div[2]/p[1]').text
-	title = driver.find_element_by_xpath('//*[@id="title0010"]').text
-	# try:
 
-		# driver.get(url)
-		# driver.set_page_load_timeout(10)
-	ag =  driver.find_elements_by_css_selector(".authorName.svAuthor")
-	paperdataset = []
+	periodical = driver.find_element_by_xpath('//*[@id="publication-title"]/a').text
+	time2 = driver.find_element_by_xpath('//*[@id="publication"]/div[2]/div[1]').text
+	title = driver.find_element_by_xpath('//*[@class="author-group"]/a/span').text
+	print("title:" + title)
+	print("pubdate: " + time2)
+	print("periodical anme" + periodical)
+	ag = driver.find_elements_by_xpath('//*[@id="author-group"]/a')
 	for i in ag:
-		if i.text == '':
-			continue
-
-		author = i.text
-	# print name
-
 		# try:
 		i.click()
-		# except:
-		# 	pass
-		emails = driver.find_elements_by_xpath('//*[@id="rightInner"]/div[2]/div/dl/dd')
-		for e in emails:
-			try:
-				email = e.find_element_by_xpath('p/a').text
-				if '@' not in email:
-					email = ''
-				else:
-					break
-			except:
-				email = ''
+		sur = i.find_element_by_xpath('//*[@id="workspace-author"]/div[1]/span[1]').text
+		giv = i.find_element_by_xpath('//*[@id="workspace-author"]/div[1]/span[2]').text
+		name = sur + ' ' + giv
+		time.sleep(2)
+		email = ""
+		emails = driver.find_elements_by_xpath('//*[@id="workspace-author"]/div')
+		for j in emails:
+			t = j.text
+			if not t:
+				t = j.find_element_by_xpath('//*').text
+			if '@' in t:
+				email = t
+				break
+		if email:
+			print('name:' + name)
+			print("title:" + title)
+			print("pubdate: " + time2)
+			print("periodical anme" + periodical)
+			print("email:" + email)
+			print('----' * 10)
 
-		if '@' in email:
-			print author.encode('GBK', 'ignore')
-			print email
-			print time
-			print periodical
-			# print workin
-			print ''
-		driver.close()
+		else:
+			print('----' * 10)
+			print('name:' + name)
+			print("title:" + title)
+			print("pubdate: " + time2)
+			print("periodical anme" + periodical)
+			print("no email")
+			print('----' * 10)
+	driver.close()
 
 if __name__ == '__main__':
-	url = 'http://www.sciencedirect.com/science/article/pii/S0379711217307257'
+	url = 'https://www.sciencedirect.com/science/article/pii/S0040402018312298'
 	tablename= ''
-	begintype1(url, tablename)
+	begin(url, tablename)
